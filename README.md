@@ -28,8 +28,8 @@ The NSEC College Attendance System provides an automated solution for recording 
 
 To get started with the NSEC College Attendance System, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/your-username/nsec-college-attendance.git`
-2. Navigate to the project directory: `cd nsec-college-attendance`
+1. Clone the repository: `git clone https://github.com/Eshan276/nsec-college-attendance.git`
+2. Navigate to the project directory: [will update soon]
 3. Set up the necessary environment and dependencies.
 4. Configure the API endpoints and database connections.
 5. Start using the system to record and manage attendance.
