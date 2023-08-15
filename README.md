@@ -14,7 +14,7 @@ Welcome to the NSEC College Attendance System repository! This system is designe
 
 ## Introduction
 
-The NSEC College Attendance System provides an automated solution for recording and managing attendance for college subjects. This system is aimed at simplifying the attendance tracking process, ensuring accurate records, and reducing manual effort.
+The Netaji Subhash Engineering College Attendance System provides an automated solution for recording and managing attendance for college subjects. This system is aimed at simplifying the attendance tracking process, ensuring accurate records, and reducing manual effort.
 
 ## Features
 
