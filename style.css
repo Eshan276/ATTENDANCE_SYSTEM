@@ -1,0 +1,75 @@
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html{
+    width: 100%;
+    height: 100%;
+}
+body{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image:linear-gradient(rgba(0, 0, 0, 0.1),
+    rgba(0, 0, 0, 0.1)),url("./nick-morrison-FHnnjk1Yj7Y-unsplash.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-blend-mode: darken;
+}
+.container{
+    width: 26%;
+    height: 60%;
+    background-color: rgba(127, 129, 123, 0.4);
+    opacity: 1;
+    color: rgb(19, 17, 17);
+    font-weight: 400;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 70px; 
+}
+.container1{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    
+
+}
+.container2{
+    display: flex;
+    gap: 10px;
+}
+.but{
+    width: 8em;
+}
+/* footer{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    margin-bottom: 2px;
+} */
+#username{
+    width: 200px;
+}
+@media (width<821px) {
+    .container1{
+        padding-left: 5%;
+    }
+    .container2{
+        flex-direction: column;
+        gap: 5px;
+    }
+    #username{
+        width: 80%;
+    }
+    #passcord{
+        width: 80%;
+    }
+}
+
