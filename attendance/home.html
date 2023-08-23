@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Website</title>
+    <style>
+        /* Basic CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        #header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+        }
+        #content {
+            margin: 20px;
+        }
+        .button {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #0074d9;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <div id="user-greeting">
+            <p>Hello, <span id="username"></span></p>
+        </div>
+        
+    </div>
+    <div id="content">
+        <h1>Choose a Subject</h1>
+        <div id="subject-buttons">
+            <a href="#" class="button" onclick="co()" >Computer Organization</a>
+            <a href="math.html" class="button">Mathametics</a>
+            <a href="dsa.html" class="button">Datastructure & Algorithm</a>
+            <a href="eco.html" class="button">Economics</a>
+            <a href="ad.html" class="button">Analog & Digital</a>
+        </div>
+    </div>
+  <br>
+    <div id="logout-button">
+            <button class="button" onclick="logout()">Logout</button>
+    </div>
+    <p id="github" style="position: fixed; bottom: 0; left: 0; right: 0; background-color: #327a05; color: #fff; text-align: center; padding: 10px;">This is an open source project, please contribute<a href="https://github.com/Eshan276/ATTENDANCE_SYSTEM">Click Here!</a>
+    </p>
+    <script>
+        function co(){
+            
+                window.location.href = "co.html"
+            
+        }
+        // JavaScript function for logout
+        function logout() {
+            // Add your logout logic here
+            alert("Logout clicked.");
+        }
+      var user=localStorage.getItem('name');
+      var username= document.getElementById("username");
+      localStorage.setItem('name', user);
+      username.textContent=user;
+    </script>
+</body>
+</html>
