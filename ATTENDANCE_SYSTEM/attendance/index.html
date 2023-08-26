@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>NSEC Attendance</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.1),
+          rgba(0, 0, 0, 0.1)), url("./nick-morrison-FHnnjk1Yj7Y-unsplash.jpg");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-blend-mode: darken;
+      margin: 0;
+    }
+
+    .container {
+      width: 80%;
+      max-width: 400px;
+      padding: 40px;
+      background-color: rgba(127, 129, 123, 0.8);
+      color: #191919;
+      font-weight: 400;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      text-align: center;
+    }
+
+    .container1 {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .container1 label {
+      text-align: left;
+    }
+
+    .container2 {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 50%;
+        }
+    #login{
+      margin-left: -14px;
+      position: relative;
+      border: none;
+      font-size: 14px;
+      color: #FFFFFF;
+      background-color: #53d900;;
+      padding: 10px;
+      width: 200px;
+      text-align: center;
+      border-radius: 50px;
+      -webkit-transition-duration: 0.4s; /* Safari */
+      transition-duration: 0.4s;
+      text-decoration: none;
+      overflow: hidden;
+      cursor: pointer;
+      transition: background-color 2s ease-out 20ms;
+      transition: color 2s ease-out 20ms;
+    }
+    #login:hover {
+            color: black;
+            background-color: #f6ff41;
+    }
+
+    #login:after {
+      content: "";
+      background: #90EE90;
+      display: block;
+      position: absolute;
+      padding-top: 200%;
+      padding-left: 350%;
+      margin-left: -20px!important;
+      margin-top: -120%;
+      opacity: 0;
+      transition: all 0.8s
+    }
+
+    #login:active:after {
+      padding: 0;
+      margin: 0;
+      opacity: 1;
+      transition: 0s
+    }
+    #username{
+      border-width: 0ch;
+      padding: 2%;
+      border-radius: 50px;
+    }
+    #password{
+      border-width: 0ch;
+      padding: 2%;
+      border-radius: 50px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="container1">
+      <label for="uname"><b>Username</b></label>
+      <input type="text" placeholder="Enter Username" id="username" name="uname" required>
+
+      <label for="psw"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" id="password" name="psw" required>
+
+      <label id="secSelector1" style="display:none">Section:</label>
+      <select id="secselector" style="display:none">
+        <option selected disabled hidden value="0">choose</option>
+        <option value="3">SEC C</option>
+      </select>
+
+    </div>
+    <div class="container2">
+      <button type="submit" class="but" id="login"
+        onclick="callAPI(document.getElementById('username').value,document.getElementById('password').value)">Login</button>
+      <button type="submit" class="but" style="display:none" id="regis"
+        onclick="callapi2(document.getElementById('username').value,document.getElementById('password').value,document.getElementById('secselector').value)">Sign
+        Up</button>
+      <a id="signup_text" href="javascript:void(0);" onclick="logi2regis();">Don't have an account yet?
+        Sign Up</a>
+      <a id="login_text" href="javascript:void(0);" style="display:none" onclick="regis2login();">Already have an
+        account? LogIn</a>
+    </div>
+  </div>
+  <script>
+    function logi2regis() {
+      var but_login = document.getElementById("login");
+      but_login.style.display = "none";
+      var but_regis = document.getElementById("regis");
+      but_regis.style.display = "block";
+      var login_text = document.getElementById("login_text");
+      login_text.style.display = "block";
+      var signup_text = document.getElementById("signup_text");
+      signup_text.style.display = "none";
+      document.getElementById("username").value = "";
+      document.getElementById("password").value = ""; // Changed "passcord" to "password"
+      var sec = document.getElementById("secselector");
+      sec.style.display = "block";
+      var sec_text = document.getElementById("secSelector1");
+      sec_text.style.display = "block";
+    }
+
+    function regis2login() {
+      var but_login = document.getElementById("login");
+      but_login.style.display = "block";
+      var but_regis = document.getElementById("regis");
+      but_regis.style.display = "none";
+      var login_text = document.getElementById("login_text");
+      login_text.style.display = "none";
+      var signup_text = document.getElementById("signup_text");
+      signup_text.style.display = "block";
+      document.getElementById("username").value = "";
+      document.getElementById("password").value = ""; // Changed "passcord" to "password"
+      var sec = document.getElementById("secselector");
+      sec.style.display = "none";
+      var sec_text = document.getElementById("secSelector1");
+      sec_text.style.display = "none";
+    }
+
+    function callAPI(user, password) {    //login
+      /*var username = document.getElementById('username').value;
+      var password = document.getElementById('password').value;*/
+
+      // Instantiate headers
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      // Create request body
+      var requestBody = JSON.stringify({
+        "user": user,
+        "password": password,
+        "opr": 0
+      });
+
+      // Create request options
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: requestBody,
+        redirect: 'follow'
+      };
+
+      // Make API call
+      fetch("https://4qcyee34jd.execute-api.ap-south-1.amazonaws.com/dev/login_regis", requestOptions)
+        .then(response => response.text())
+        .then(result => {
+          const responseBody = JSON.parse(result).body;
+          if (responseBody) {
+            console.log("Redirecting to home.html");
+            localStorage.setItem('name', user);
+            window.location.href = "home.html";
+          } else {
+            console.log("Login failed.");
+            alert("Username or password is wrong");
+          }
+        })
+        .catch(error => console.log('error', error));
+    }
+    function callapi2(user, password, section) {  //regis
+      if (user.trim() === '' || password.trim() === '') {
+        console.log("Username or password is empty.");
+        alert("Username or password cannot be empty.");
+        return; // Terminate the function
+      }
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      // Create request body
+      var requestBody = JSON.stringify({
+        "user": user,
+        "password": password,
+        "section": section,
+        "opr": 1
+      });
+
+      // Create request options
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: requestBody,
+        redirect: 'follow'
+      };
+
+      // Make API call
+      fetch("https://4qcyee34jd.execute-api.ap-south-1.amazonaws.com/dev/login_regis", requestOptions)
+        .then(response => response.text())
+        .then(result => alert(JSON.parse(result).body))
+        .catch(error => console.log('error', error));
+    }
+  </script>
+</body>
+
+</html>
