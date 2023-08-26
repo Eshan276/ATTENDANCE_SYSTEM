@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Website</title>
+    <style>
+        /* Basic CSS styles */
+        body {
+            font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-image: url("nick-morrison-FHnnjk1Yj7Y-unsplash.jpg");
+            background-repeat: no-repeat;
+            background-size: 3000px 2000px;
+        }
+        #header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+        }
+        #content {
+            margin: 20px;
+        }
+        .button {
+            /* display: inline-block; */
+            width: 200px;
+            /* filter: blur(10px) ; */
+            align-items: center;
+            border-radius: 50px;
+            /* -webkit-filter: blur(2px); */
+            /* filter: blur(2px); */
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #53d900;;
+            color: rgb(255, 255, 255);
+            opacity: 1;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+            flex-direction: column-reverse;
+            display: flex;
+            justify-content: center;
+            font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif;
+            text-decoration: none;
+            transition: background-color 2s ease-out 20ms;
+            text-shadow: none;
+    
+        }
+        .button:hover {
+            color: black;
+            background-color: #f6ff41;
+            /* -webkit-filter: blur(0); */
+            opacity: 1;
+            /* filter: blur(0); */
+        }
+        .center {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+        .lout{
+            margin-top: 70%;
+            border-radius: 50px;
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #53d900;;
+            color: rgb(0, 0, 0);
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+            font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif;
+            text-decoration: none;
+            transition: background-color 2s ease-out 20ms;
+        }
+        .lout:hover {
+            background-color: #f6ff41;
+        }
+        p a{
+            text-decoration: none;
+            color:blanchedalmond;
+        
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <div id="user-greeting">
+            <p>Hello, <span id="username"></span></p>
+        </div>
+        
+    </div>
+    <div id="content">
+        <h1>Choose a Subject</h1>
+        <div id="subject-buttons">
+            <div class="center">
+            <a href="#" class="button" onclick="co()" >Computer Organization</a>
+            <a href="math.html" class="button">Mathametics</a>
+            <a href="dsa.html" class="button">Datastructure & Algorithm</a>
+            <a href="eco.html" class="button">Economics</a>
+            <a href="ad.html" class="button">Analog & Digital</a>
+        </div>
+        </div>
+    </div>
+  <br>
+    <div id="logout-button">
+            <button class="lout" onclick="logout()">Logout</button>
+    </div>
+    <p id="github" style="position: fixed; bottom: 0; left: 0; right: 0; background-color: #327a05; color: #fff; text-align: center; padding: 10px;">This is an open source project, please contribute<a href="https://github.com/Eshan276/ATTENDANCE_SYSTEM"> Click Here!</a>
+    </p>
+    <script>
+        function co(){
+            
+                window.location.href = "co.html"
+            
+        }
+        // JavaScript function for logout
+        function logout() {
+            // Add your logout logic here
+            alert("Logout clicked.");
+            window.location.href = "index.html";
+        }
+      var user=localStorage.getItem('name');
+      var username= document.getElementById("username");
+      localStorage.setItem('name', user);
+      username.textContent=user;
+    </script>
+</body>
+</html>
