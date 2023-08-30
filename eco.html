@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NSEC_ATTENDANCE</title>
+  <style>
+    body {
+      font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      text-align: center;
+      padding: 8px;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    select {
+      width: 100%;
+      padding: 5px;
+    }
+
+    .classname {
+
+      background: transparent;
+      width: 80px;
+      padding: 5px;
+
+    }
+    p a{
+            text-decoration: none;
+            color:blanchedalmond;
+        
+        }
+
+    /*td select {
+    width: 50px; /* You can adjust the value to your preference 
+  }*/
+  </style>
+</head>
+
+<body onload="f_per(user,subject_val) ">
+  <div id="user-greeting">
+    <p>Hello, <span id="username1"></span></p>
+</div>
+  <h1>Economics for Engineers :attendance(CA2)</h1>
+  <label for="monthSelector">Select a month:</label>
+  <select id="monthSelector">
+    <option value="0">January</option>
+    <option value="1">February</option>
+    <option value="2">March</option>
+    <option value="3">April</option>
+    <option value="4">May</option>
+    <option value="5">June</option>
+    <option value="6">July</option>
+    <option value="7">August</option>
+    <option value="8">September</option>
+    <option value="9">October</option>
+    <option value="10">November</option>
+    <option value="11">December</option>
+    <option selected disabled hidden value="12">chose</option>
+  </select>
+
+  <table id="calendar">
+    <thead>
+      <tr>
+        <th>Sun</th>
+        <th>Mon</th>
+        <th>Tue</th>
+        <th>Wed</th>
+        <th>Thu</th>
+        <th>Fri</th>
+        <th>Sat</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+  <br>
+  <button id="submit" style="display:none" onclick="choice2value()" ;">submit</button>
+  <br>
+  <p id="bruh"> your current attendance percentage:
+    <span id="per_output"></span>
+    <!--f_per is to load the percentage at startup-->
+  </p>
+  <p id="github" style="position: fixed; bottom: 0; left: 0; right: 0; background-color: #327a05; color: #fff; text-align: center; padding: 10px;">Meet the <a href="https://top-contributors-today.framer.ai/">Contributors</a>
+  </p>
+  <script>
+    var data_api = 0;
+    var subject_val=3;     //co = 0 (subject_val)
+    //var user = "eshan1";
+    var user=localStorage.getItem('name');
+    
+    var username1= document.getElementById("username1");
+    username1.textContent=user;
+    var data = [];
+    var perm_monthname = '';
+    var att = 0;
+    var total = 0;
+    const monthNames = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+    const sub= ["co","dsa","math","ad","eco"];
+    const calendarBody = document.querySelector('#calendar tbody');
+    const monthSelector = document.querySelector('#monthSelector');
+
+    function createCalendar(year, month) {
+      calendarBody.innerHTML = '';
+
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const totalDays = lastDay.getDate();
+      let currentDate = 1;
+
+      for (let week = 0; week < 6; week++) {
+        const row = document.createElement('tr');
+
+        for (let day = 0; day < 7; day++) {
+          const cell = document.createElement('td');
+
+          if ((week === 0 && day < firstDay.getDay()) || currentDate > totalDays) {
+            cell.textContent = '';
+          } else {
+            cell.textContent = currentDate;
+
+            if (day === 1 || day === 3 || day === 5) { // mongolbar ar budhbar co
+              const select = document.createElement('select');
+              cell.width = "15%";
+              // cell.white-space:nowrap;
+              const month_name = monthNames[month]; // Define month_name here
+              select.classList.add('classname');
+              select.id = `option${month_name}${currentDate}`;
+              select.addEventListener("change", function () { //@@@@@@@@@@@@@@@@@add_if@@@@@@@@@@@@@@@
+                call_button(); // Call the function with the selected val
+              });
+              const option0 = document.createElement('option');
+              option0.value = 0;
+              option0.selected = true;
+              option0.disabled = true;
+              option0.hidden = true;
+              option0.textContent = 'Choose';
+              const option1 = document.createElement('option');
+              option1.textContent = 'present';
+              option1.value = 1;
+              const option2 = document.createElement('option');
+              option2.textContent = 'absent';
+              option2.value = 2;
+              const option3 = document.createElement('option');
+              option3.textContent = 'not_happen';
+              option3.value = 3;
+
+              select.appendChild(option0);
+              select.appendChild(option1);
+              select.appendChild(option2);
+              select.appendChild(option3);
+
+              cell.appendChild(select);
+            }
+
+            currentDate++;
+          }
+
+          row.appendChild(cell);
+        }
+
+        calendarBody.appendChild(row);
+      }
+    }
+
+    const today = new Date();
+    //createCalendar(today.getFullYear(), today.getMonth());
+
+    // Event listener for month selection
+    monthSelector.addEventListener('change', (event) => {
+      const selectedMonth = parseInt(event.target.value);
+
+      var month_name = monthNames[selectedMonth];
+      perm_monthname = month_name;
+      get_data(user, selectedMonth,subject_val)    /// data ta pabe db theke, need to do call api
+      createCalendar(today.getFullYear(), selectedMonth);
+      console.log("its ok")
+      setTimeout(function () {
+        preselect(month_name, data_api);
+      }, 1000);
+      //preselect(month_name, data_api);          // after done we will set perm_flag to 1 to enable butoncall
+      var button = document.getElementById("submit");
+      button.style.display = "none";
+      button.value = selectedMonth;
+    });
+    function call_button() {
+      var button = document.getElementById("submit");
+      button.style.display = "block";
+      
+    }
+    /*for (var i = 1; i <= 31; i++) {
+    var selectId = "option" + perm_monthname + i;
+    var selectElement = document.getElementById(selectId);
+
+    if (selectElement != null) {
+     selectElement.addEventListener("change", function() {
+      var selectedValue = this.value; // Get the selected value using 'this'
+      // Call your function or perform actions userd on the selected value
+      var button=document.getElementById("submit");
+      button.style.display = "block";
+      button.value=selectedMonth;
+       });
+     }
+    }*/
+    function choice2value() {
+      att = 0;
+      total = 0;
+      var flag2=1;
+      var button = document.getElementById("submit");
+      var temp_att = att;
+      var temp_total = total;
+      var flag = 0;
+      var temp_month = button.value;
+      var temp_monthname = monthNames[temp_month];
+      for (var i = 1; i <= 31; i++) {
+        var selectId = "option" + temp_monthname + i;     //`option${month_name}${currentDate}`
+        var selectElement = document.getElementById(selectId);
+        if (selectElement != null) {
+          // Get the selected option's value
+          var selectedValue = selectElement.options[selectElement.selectedIndex].value;
+
+          // Display the selected value (you can modify this part as needed)
+          console.log("Selected value for " + selectId + ": " + selectedValue);
+          if (flag == 0) {
+            if (selectedValue == "1") {
+              data.push(selectedValue);
+              att = att + 1;
+              total = total + 1;
+            } else if (selectedValue == "2") {
+              data.push(selectedValue);
+              total = total + 1;
+            } else if (selectedValue == "3") {
+              data.push(selectedValue);
+            } else {
+              data.push(0);
+              flag = 1;
+            }
+          } else {
+            if (selectedValue == "1" || selectedValue == "2" || selectedValue == "3") {
+              att = temp_att;
+              total = temp_total;
+              console.log("the problem Selected value for " + selectId + ": " + selectedValue);
+              alert("please dont skip choices");
+              data.length = 0;
+              data.push(0);
+              flag2=0;
+              break;
+            } else {
+              data.push(0);
+            }
+          }
+
+          console.log("att-" + att + "total-" + total);
+
+        }// if r bracket
+      }  //for loop r bracket
+
+      console.log(data); //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@choice miss thakleo call api run kor6e, fix ittt
+      if(flag2){
+      calapi_dataentry(user, temp_month, data,subject_val);
+         setTimeout(function () {
+        ul_percetage(user,subject_val);
+      }, 2000);
+      }
+      //now here we will push the data in our data user and store it there and ultimately calculate the percentage
+    }
+    function preselect(monthName, t_data) { //here we will get the value from our db using apigw and use it
+      //  this one will go inside month selector
+      console.log("hello")
+      const selectElements = document.querySelectorAll(`select[id^="option${monthName}"]`);
+      //query selector month name diye korte hobe
+      console.log(t_data)
+      for (let i = 0; i < t_data.length && i < selectElements.length; i++) {
+        const digit = t_data[i + 1];
+        console.log(digit)
+        const optionIndex = parseInt(digit);
+        console.log(optionIndex)
+
+        if (optionIndex >= 0 && optionIndex < selectElements[i].options.length) {
+          selectElements[i].options[optionIndex].selected = true;
+        }
+      }
+    }
+    var ul_percetage = (user,subject_val) => {
+      const concatenatedString = data.join('');
+      const concatenatedNumber = parseInt(concatenatedString, 10);
+      console.log(concatenatedNumber)
+      // instantiate a headers object
+      var myHeaders = new Headers();
+      // add content type header to object
+      myHeaders.append("Content-Type", "application/json");
+      // using built in JSON utility package turn object to string and store in a variable
+      var raw = JSON.stringify({"user": user,"subject_val": subject_val});
+      // create a JSON object with parameters for API call and store in a variable
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
+      // make API call with parameters and use promises to get response
+      fetch("https://4qcyee34jd.execute-api.ap-south-1.amazonaws.com/dev/percentage", requestOptions)
+        .then(response => response.text())
+        .then(result => {
+          const responseBody = JSON.parse(result).body;
+          console.log(responseBody);
+          console.log(responseBody.replace(/\"/g, ""));
+          const per = parseFloat(responseBody)
+          var attendancePercentage = per;
+          var outputElement = document.getElementById("per_output");
+          outputElement.textContent = attendancePercentage.toFixed(2) + "%";
+        })
+        .catch(error => console.log('error', error));
+    }
+    var get_data = (user, selectedMonth,subject_val) => {
+      // instantiate a headers object
+      var myHeaders = new Headers();
+      // add content type header to object
+      myHeaders.append("Content-Type", "application/json");
+      // using built in JSON utility package turn object to string and store in a variable
+      var raw = JSON.stringify({"user": user, "temp_month": selectedMonth,"subject_val": subject_val});
+      // create a JSON object with parameters for API call and store in a variable
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
+      // make API call with parameters and use promises to get response
+      fetch("https://4qcyee34jd.execute-api.ap-south-1.amazonaws.com/dev/get_data", requestOptions)
+        .then(response => response.text())
+        .then(result => {
+          data_api = JSON.parse(result).body;
+          console.log(data_api);
+          console.log(data_api.replace(/\"/g, ""));
+
+        })
+        .catch(error => console.log('error', error));
+    }
+    var calapi_dataentry = (user, temp_month, data,subject_val) => {
+      const concatenatedString = data.join('');
+      const concatenatedNumber = parseInt(concatenatedString, 10);
+      console.log(concatenatedNumber)
+      // instantiate a headers object
+      var myHeaders = new Headers();
+      // add content type header to object
+      myHeaders.append("Content-Type", "application/json");
+      // using built in JSON utility package turn object to string and store in a variable
+      var raw = JSON.stringify({"user": user, "temp_month": temp_month, "data": concatenatedNumber,"subject_val": subject_val});
+      // create a JSON object with parameters for API call and store in a variable
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
+      // make API call with parameters and use promises to get response
+      fetch("https://4qcyee34jd.execute-api.ap-south-1.amazonaws.com/dev/data_entry", requestOptions)
+        .then(response => response.text())
+        .then(result => alert("submit succesfull"))
+        .catch(error => console.log('error', error));
+    }
+    var f_per = (user,subject_val) => {
+      console.log('hi')
+      // instantiate a headers object
+      var myHeaders = new Headers();
+      // add content type header to object
+      myHeaders.append("Content-Type", "application/json");
+      // using built in JSON utility package turn object to string and store in a variable
+      var raw = JSON.stringify({"user": user,"subject_val": subject_val});
+      // create a JSON object with parameters for API call and store in a variable
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
+      // make API call with parameters and use promises to get response
+      fetch("https://4qcyee34jd.execute-api.ap-south-1.amazonaws.com/dev/onload", requestOptions)
+        .then(response => response.text())
+        .then(result => {
+          const responseBody = JSON.parse(result).body;
+          console.log(responseBody);
+          console.log(responseBody.replace(/\"/g, ""));
+          const per = parseFloat(responseBody)
+          var attendancePercentage = per;
+          var outputElement = document.getElementById("per_output");
+          outputElement.textContent = attendancePercentage.toFixed(2) + "%";
+        })
+        .catch(error => console.log('error', error));
+
+    }
+    
+  </script>
+</body>
+
+</html>
